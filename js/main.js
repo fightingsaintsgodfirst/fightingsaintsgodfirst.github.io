@@ -106,9 +106,11 @@ if (menuToggle && navLinks) {
 
 // ===== HEADER SCROLL =====
 const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 60);
-});
+if (header) {
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+}
 
 // ===== SCROLL REVEAL (staggered) =====
 const revealObserver = new IntersectionObserver((entries) => {

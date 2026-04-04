@@ -649,6 +649,46 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: 16px !important;
 }
 
+/* ===== QR CODE BANNER ===== */
+.qr-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 48px;
+  background: var(--black-card); border: 1px solid rgba(212,160,23,0.12);
+  border-radius: var(--radius); padding: 56px 52px;
+  position: relative; overflow: hidden;
+}
+.qr-banner::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.qr-banner::after {
+  content: ''; position: absolute; bottom: -80px; left: -80px;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(212,160,23,0.06), transparent 70%);
+}
+.qr-content { flex: 1; position: relative; z-index: 1; }
+.qr-icon { font-size: 2.4rem; margin-bottom: 12px; }
+.qr-heading {
+  font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900;
+  text-transform: uppercase; margin-bottom: 14px; line-height: 1.1;
+}
+.qr-desc { color: var(--gray); font-size: 1rem; line-height: 1.8; max-width: 480px; margin-bottom: 24px; }
+.qr-code-wrap {
+  flex-shrink: 0; text-align: center;
+  background: var(--white); border-radius: var(--radius);
+  padding: 20px; position: relative; z-index: 1;
+}
+#qr-canvas { display: block; margin: 0 auto; }
+.qr-scan-text {
+  color: var(--black); font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px; margin-top: 12px;
+}
+
+@media (max-width: 968px) {
+  .qr-banner { flex-direction: column; text-align: center; padding: 40px 28px; }
+  .qr-desc { margin: 0 auto 24px; }
+}
+
 /* ===== SCROLL REVEAL ===== */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }

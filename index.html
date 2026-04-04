@@ -139,11 +139,11 @@
           <div class="qr-icon">&#127909;</div>
           <div class="section-label">Live Cam</div>
           <h2 class="qr-heading">Share Your Moments</h2>
-          <p class="qr-desc">Parents &amp; students &mdash; scan the QR code to share your photos and videos from practices, tournaments, and team events with us!</p>
-          <a href="mailto:fightingsaintsgodfirst@gmail.com?subject=Photo%20Submission%20-%20Fighting%20Saints&body=Hi%20Fighting%20Saints%2C%0A%0APlease%20find%20my%20photos%2Fvideos%20attached.%0A%0APlayer%20Name%3A%0AEvent%3A%0ADate%3A" class="btn btn-outline btn-sm">Or Email Us Your Photos</a>
+          <p class="qr-desc">Parents &amp; students &mdash; scan the QR code or click below to share your photos and videos from practices, tournaments, and team events!</p>
+          <a href="contact.html?ref=photos" class="btn btn-outline btn-sm">Send Us Your Photos</a>
         </div>
         <div class="qr-code-wrap">
-          <canvas id="qr-canvas" width="200" height="200"></canvas>
+          <div id="qr-code"></div>
           <p class="qr-scan-text">Scan to Share Photos</p>
         </div>
       </div>
@@ -397,6 +397,7 @@
   </footer>
 
   <div class="lightbox"><div class="lightbox-close">&times;</div><div class="lightbox-content"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

@@ -678,7 +678,7 @@ img { max-width: 100%; height: auto; display: block; }
   background: var(--white); border-radius: var(--radius);
   padding: 20px; position: relative; z-index: 1;
 }
-#qr-canvas { display: block; margin: 0 auto; }
+#qr-code { display: block; margin: 0 auto; }
 .qr-scan-text {
   color: var(--black); font-size: 0.72rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 2px; margin-top: 12px;

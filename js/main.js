@@ -254,91 +254,29 @@ document.querySelectorAll('.location-card, .donate-card, .vm-card').forEach(card
 
 // ===== QR CODE GENERATOR =====
 (function() {
-  const canvas = document.getElementById('qr-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const url = 'mailto:fightingsaintsgodfirst@gmail.com?subject=Photo%20Submission%20-%20Fighting%20Saints';
+  const container = document.getElementById('qr-code');
+  if (!container) return;
+  if (typeof qrcode === 'undefined') return;
 
-  // Minimal QR code matrix generator (alphanumeric mode, version 3, ECC L)
-  // For reliability, we draw a stylized QR-like code with the actual data encoded as a visual pattern
-  function generateQR() {
-    const size = 200;
-    const modules = 25;
-    const cellSize = size / modules;
+  const qr = qrcode(0, 'M');
+  qr.addData('mailto:karla.nash2@gmail.com?subject=Photo Submission - Fighting Saints&body=Hi Fighting Saints!%0A%0AAttached are my photos/videos.%0A%0APlayer Name:%0AEvent:%0ADate:');
+  qr.make();
 
-    // Create a seeded pattern from the URL string
-    function hash(str, i) {
-      let h = i * 2654435761;
-      for (let c = 0; c < str.length; c++) h = ((h << 5) - h + str.charCodeAt(c)) | 0;
-      return h;
-    }
+  container.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 0, scalable: true });
 
-    // Clear canvas
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, size, size);
-
-    // Draw finder patterns (the 3 big squares in corners)
-    function drawFinder(x, y) {
-      // Outer
-      ctx.fillStyle = '#050505';
-      ctx.fillRect(x * cellSize, y * cellSize, 7 * cellSize, 7 * cellSize);
-      // White ring
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect((x + 1) * cellSize, (y + 1) * cellSize, 5 * cellSize, 5 * cellSize);
-      // Inner
-      ctx.fillStyle = '#d4a017';
-      ctx.fillRect((x + 2) * cellSize, (y + 2) * cellSize, 3 * cellSize, 3 * cellSize);
-    }
-
-    drawFinder(0, 0);     // Top-left
-    drawFinder(18, 0);    // Top-right
-    drawFinder(0, 18);    // Bottom-left
-
-    // Draw alignment pattern (center)
-    ctx.fillStyle = '#050505';
-    ctx.fillRect(16 * cellSize, 16 * cellSize, 5 * cellSize, 5 * cellSize);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(17 * cellSize, 17 * cellSize, 3 * cellSize, 3 * cellSize);
-    ctx.fillStyle = '#d4a017';
-    ctx.fillRect(18 * cellSize, 18 * cellSize, 1 * cellSize, 1 * cellSize);
-
-    // Timing patterns
-    for (let i = 8; i < 17; i++) {
-      const color = i % 2 === 0 ? '#050505' : '#ffffff';
-      ctx.fillStyle = color;
-      ctx.fillRect(i * cellSize, 6 * cellSize, cellSize, cellSize);
-      ctx.fillRect(6 * cellSize, i * cellSize, cellSize, cellSize);
-    }
-
-    // Data modules - generate from URL hash
-    ctx.fillStyle = '#050505';
-    for (let row = 0; row < modules; row++) {
-      for (let col = 0; col < modules; col++) {
-        // Skip finder, timing, alignment areas
-        if ((row < 8 && col < 8) || (row < 8 && col > 16) || (row > 16 && col < 8)) continue;
-        if (row === 6 || col === 6) continue;
-        if (row >= 16 && row <= 20 && col >= 16 && col <= 20) continue;
-
-        const h = hash(url, row * modules + col);
-        if ((h & 3) === 0) {
-          ctx.fillStyle = '#050505';
-          ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-        }
-      }
-    }
-
-    // Add small Fighting Saints logo text in center
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(9.5 * cellSize, 9.5 * cellSize, 6 * cellSize, 6 * cellSize);
-    ctx.fillStyle = '#d4a017';
-    ctx.font = 'bold 14px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('FS', 12.5 * cellSize, 12 * cellSize);
-    ctx.font = '6px Inter, sans-serif';
-    ctx.fillStyle = '#050505';
-    ctx.fillText('SAINTS', 12.5 * cellSize, 14 * cellSize);
+  // Style the SVG
+  const svg = container.querySelector('svg');
+  if (svg) {
+    svg.style.width = '180px';
+    svg.style.height = '180px';
+    svg.style.display = 'block';
+    svg.style.margin = '0 auto';
   }
+})();
 
-  generateQR();
+// ===== AUTO-SELECT PHOTO SUBJECT ON CONTACT PAGE =====
+(function() {
+  if (!window.location.search.includes('ref=photos')) return;
+  const subject = document.getElementById('subject');
+  if (subject) subject.value = 'photos';
 })();

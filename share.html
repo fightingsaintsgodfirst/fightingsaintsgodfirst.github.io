@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Your Moments | Fighting Saints Basketball</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="images/logo-nav.svg" type="image/svg+xml">
+  <style>
+    .share-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
+    .share-card { max-width: 420px; width: 100%; background: var(--black-card); border: 1px solid rgba(212,160,23,0.12); border-radius: var(--radius); padding: 48px 32px; position: relative; overflow: hidden; }
+    .share-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .share-logo { width: 80px; height: 80px; margin: 0 auto 20px; }
+    .share-title { font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+    .share-sub { color: var(--gray); font-size: 0.92rem; line-height: 1.7; margin-bottom: 32px; }
+    .camera-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 18px 24px; background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); color: var(--black); font-size: 1rem; font-weight: 800; border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; transition: var(--transition); position: relative; overflow: hidden; }
+    .camera-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 40px var(--gold-glow); }
+    .camera-btn svg { flex-shrink: 0; }
+    .camera-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .or-divider { color: var(--gray-dark); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 3px; margin: 20px 0; }
+    .upload-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 24px; background: transparent; color: var(--white); font-size: 0.88rem; font-weight: 700; border: 2px solid rgba(255,255,255,0.15); border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); position: relative; overflow: hidden; }
+    .upload-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+    .preview-area { margin-top: 24px; display: none; }
+    .preview-area.active { display: block; }
+    .preview-img { max-width: 100%; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(212,160,23,0.2); }
+    .preview-count { color: var(--gold); font-size: 0.88rem; font-weight: 700; margin-bottom: 16px; }
+    .send-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 36px; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: var(--white); font-size: 0.92rem; font-weight: 700; border: none; border-radius: 50px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); width: 100%; }
+    .send-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(131,58,180,0.4); }
+    .back-link { display: inline-block; margin-top: 24px; color: var(--gray-dark); font-size: 0.82rem; }
+    .back-link:hover { color: var(--gold); }
+    .success-msg { display: none; padding: 20px; background: rgba(46,125,50,0.15); border: 1px solid rgba(46,125,50,0.3); border-radius: 12px; color: #66bb6a; font-weight: 600; margin-top: 16px; }
+    .success-msg.active { display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="share-page">
+    <div class="share-card">
+      <img src="images/logo-nav.svg" alt="Fighting Saints" class="share-logo">
+      <h1 class="share-title">Share Your Moments</h1>
+      <p class="share-sub">Snap a photo from practice, games, or team events and share it with the Fighting Saints family!</p>
+
+      <label class="camera-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Take a Photo
+        <input type="file" accept="image/*" capture="environment" class="camera-input" id="cameraInput">
+      </label>
+
+      <div class="or-divider">or</div>
+
+      <label class="upload-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload from Gallery
+        <input type="file" accept="image/*" multiple class="camera-input" id="galleryInput">
+      </label>
+
+      <div class="preview-area" id="previewArea">
+        <div class="preview-count" id="previewCount"></div>
+        <div id="previewImages"></div>
+        <button class="send-btn" id="sendBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send to Fighting Saints
+        </button>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        Photos ready to share! Your email app will open with the photos attached.
+      </div>
+
+      <a href="index.html" class="back-link">&larr; Back to Website</a>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    const cameraInput = document.getElementById('cameraInput');
+    const galleryInput = document.getElementById('galleryInput');
+    const previewArea = document.getElementById('previewArea');
+    const previewImages = document.getElementById('previewImages');
+    const previewCount = document.getElementById('previewCount');
+    const sendBtn = document.getElementById('sendBtn');
+    const successMsg = document.getElementById('successMsg');
+    let selectedFiles = [];
+
+    function handleFiles(files) {
+      selectedFiles = Array.from(files);
+      previewImages.innerHTML = '';
+      previewCount.textContent = selectedFiles.length + ' photo' + (selectedFiles.length > 1 ? 's' : '') + ' selected';
+      previewArea.classList.add('active');
+
+      selectedFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'preview-img';
+          previewImages.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    cameraInput.addEventListener('change', (e) => { if (e.target.files.length) handleFiles(e.target.files); });
+    galleryInput.addEventListener('change', (e) => { if (e.target.files.length) handleFiles(e.target.files); });
+
+    sendBtn.addEventListener('click', async () => {
+      // Try Web Share API first (works on mobile)
+      if (navigator.canShare && selectedFiles.length > 0) {
+        try {
+          await navigator.share({
+            title: 'Fighting Saints Photos',
+            text: 'Here are my photos from Fighting Saints Basketball!',
+            files: selectedFiles
+          });
+          successMsg.classList.add('active');
+          successMsg.textContent = 'Photos shared successfully!';
+          return;
+        } catch (err) {
+          // User cancelled or not supported, fall through to email
+        }
+      }
+
+      // Fallback: open email
+      window.location.href = 'mailto:karla.nash2@gmail.com?subject=Photo Submission - Fighting Saints&body=Hi Fighting Saints!%0A%0APlease find my photos attached.%0A%0APlayer Name:%0AEvent:%0ADate:';
+      successMsg.classList.add('active');
+      successMsg.textContent = 'Email app opened! Please attach your photos to the email.';
+    });
+  </script>
+</body>
+</html>

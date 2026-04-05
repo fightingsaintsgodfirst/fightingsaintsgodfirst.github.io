@@ -261,7 +261,7 @@ document.querySelectorAll('.location-card, .donate-card, .vm-card').forEach(card
   if (typeof qrcode === 'undefined') return;
 
   const qr = qrcode(0, 'M');
-  qr.addData('mailto:karla.nash2@gmail.com?subject=Photo Submission - Fighting Saints&body=Hi Fighting Saints!%0A%0AAttached are my photos/videos.%0A%0APlayer Name:%0AEvent:%0ADate:');
+  qr.addData('https://fightingsaintsgodfirst.github.io/share.html');
   qr.make();
 
   container.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 0, scalable: true });

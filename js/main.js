@@ -1,3 +1,31 @@
+// ===== COPY PROTECTION =====
+(function() {
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable text selection
+  document.addEventListener('selectstart', e => {
+    const tag = e.target.tagName;
+    if (tag !== 'INPUT' && tag !== 'TEXTAREA') e.preventDefault();
+  });
+
+  // Disable image drag
+  document.addEventListener('dragstart', e => {
+    if (e.target.tagName === 'IMG') e.preventDefault();
+  });
+
+  // Block common devtools/save shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12') { e.preventDefault(); return; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) {
+      e.preventDefault(); return;
+    }
+    if ((e.ctrlKey || e.metaKey) && ['U','S'].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+    }
+  });
+})();
+
 // ===== VIDEO INSTANT PLAY FIX =====
 (function() {
   const video = document.querySelector('.hero-video');

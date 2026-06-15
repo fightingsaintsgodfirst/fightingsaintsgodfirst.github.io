@@ -166,7 +166,7 @@ document.querySelectorAll('.nav-links a:not(.btn-donate)').forEach(link => {
 
 // ===== COUNTDOWN =====
 function updateCountdown() {
-  const target = new Date('2026-04-11T10:00:00').getTime();
+  const target = new Date('2026-08-09T10:00:00').getTime();
   const now = Date.now();
   const diff = Math.max(0, target - now);
   const d = Math.floor(diff / 864e5);
